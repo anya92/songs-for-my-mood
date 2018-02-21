@@ -1,4 +1,6 @@
 import React from 'react';
-import { render } from 'react-dom';
+import { hydrate } from 'react-dom';
 
-render(<h1>SRR REACT</h1>, document.getElementById('root'));
+import App from './components/App';
+
+hydrate(<App />, document.getElementById('root'));
