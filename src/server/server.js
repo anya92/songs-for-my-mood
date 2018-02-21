@@ -7,6 +7,7 @@ import cors from 'cors';
 
 import * as authControllers from './controllers/authControllers';
 import renderer from './helpers/renderer';
+import createStore from './helpers/createStore';
 
 const app = express();
 const MongoStore = require('connect-mongo')(session);
@@ -50,7 +51,10 @@ app.get('/auth/logout', authControllers.logout);
 app.get('/api', (req, res) => res.json({ api: 'ok' }));
 
 app.get('*', (req, res) => {
-  const content = renderer(req);
+  
+  const store = createStore(req);
+
+  const content = renderer(req, store);
   
   res.send(content);
 });
