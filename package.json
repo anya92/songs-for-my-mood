@@ -5,8 +5,8 @@
   "scripts": {
     "dev:server": "nodemon --watch build --exec node build/bundle.js",
     "dev": "npm-run-all --parallel dev:*",
-    "dev:build-server": "webpack --config webpack.server.js --watch --colors --progress",
-    "dev:build-client": "webpack --config webpack.client.js --watch --colors --progress"
+    "dev:build-server": "webpack --config webpack.server.js --watch --colors",
+    "dev:build-client": "webpack --config webpack.client.js --watch --colors"
   },
   "keywords": [],
   "author": "",
@@ -30,7 +30,8 @@
     "react-router-dom": "^4.2.2",
     "redux": "^3.7.2",
     "redux-thunk": "^2.2.0",
-    "serialize-javascript": "^1.4.0"
+    "serialize-javascript": "^1.4.0",
+    "styled-components": "^3.1.6"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",

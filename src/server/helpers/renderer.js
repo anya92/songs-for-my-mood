@@ -1,17 +1,25 @@
 import React from 'react';
 import { renderToString } from 'react-dom/server';
 import { Provider } from 'react-redux';
+import { ServerStyleSheet } from 'styled-components'
 import serialize from 'serialize-javascript';
 
 import App from '../../client/components/App';
 
 export default (req, store) => {
-  const content = renderToString(<Provider store={store}><App /></Provider>);
-
-  console.log('store', store.getState());
+  const sheet = new ServerStyleSheet();
+  const content = renderToString(sheet.collectStyles(<Provider store={store}><App /></Provider>));
+  const styleTags = sheet.getStyleTags();
+  // console.log('store', store.getState());
 
   return `
     <html>
+      <head>
+        <title>My App</title>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css">
+        <link href="https://fonts.googleapis.com/css?family=Ubuntu:300,400,700|Lato:300,400,700" rel="stylesheet">
+        ${styleTags}
+      </head>
       <body>
         <div id="root">${content}</div>
         <script>

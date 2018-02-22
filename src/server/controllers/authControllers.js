@@ -22,7 +22,6 @@ export const loginCallback = (req, res, next) => {
 };
 
 export const getUser = (req, res) => {
-  console.log('get User', req.user);
   res.send(req.user);
 };
 
