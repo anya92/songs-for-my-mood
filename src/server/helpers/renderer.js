@@ -3,14 +3,12 @@ import { renderToString } from 'react-dom/server';
 import { Provider } from 'react-redux';
 import serialize from 'serialize-javascript';
 
-import App  from '../../client/components/App';
+import App from '../../client/components/App';
 
 export default (req, store) => {
-  const content = renderToString(
-    <Provider store={store}>
-      <App />
-    </Provider>
-  );
+  const content = renderToString(<Provider store={store}><App /></Provider>);
+
+  console.log('store', store.getState());
 
   return `
     <html>
@@ -23,4 +21,4 @@ export default (req, store) => {
       </body>
     </html>
   `;
-}
+};

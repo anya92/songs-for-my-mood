@@ -1,20 +1,22 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+// import { renderRoutes } from 'react-router-config';
 import { fetchCurrentUser } from '../actions';
 
 class App extends Component {
-  componentDidMount() {
-    this.props.fetchCurrentUser();
-  }
-
   renderLogin() {
     switch (this.props.auth) {
-      case null: 
+      case null:
         return <div />;
-      case false: 
+      case false:
         return <a href="/auth/spotify">Login</a>;
       default:
-        return <a href="/auth/logout">Logout</a>;  
+        return (
+          <div>
+            <div>hello, { this.props.auth.username }</div>
+            <a href="/auth/logout">Logout</a>
+          </div>
+        );
     }
   }
 
@@ -31,7 +33,7 @@ class App extends Component {
 
 function mapStateToProps({ auth }) {
   return {
-    auth
+    auth,
   };
 }
 

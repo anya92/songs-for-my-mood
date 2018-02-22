@@ -8,6 +8,7 @@ import cors from 'cors';
 import * as authControllers from './controllers/authControllers';
 import renderer from './helpers/renderer';
 import createStore from './helpers/createStore';
+import { fetchCurrentUser } from '../client/actions';
 
 const app = express();
 const MongoStore = require('connect-mongo')(session);
@@ -30,9 +31,9 @@ app.use(session({
   key: process.env.KEY,
   resave: false,
   saveUninitialized: false,
-  store: new MongoStore({ 
-    mongooseConnection: mongoose.connection 
-  })
+  store: new MongoStore({
+    mongooseConnection: mongoose.connection,
+  }),
 }));
 
 app.use(cookieParser());
@@ -51,12 +52,20 @@ app.get('/auth/logout', authControllers.logout);
 app.get('/api', (req, res) => res.json({ api: 'ok' }));
 
 app.get('*', (req, res) => {
-  
   const store = createStore(req);
 
-  const content = renderer(req, store);
-  
-  res.send(content);
+  const promises = [store.dispatch(fetchCurrentUser())];
+
+  const render = () => {
+    // const context = {};
+    const content = renderer(req, store);
+
+    res.send(content);
+  };
+
+  Promise.all(promises)
+    .then(render)
+    .catch(render);
 });
 
 export default app;

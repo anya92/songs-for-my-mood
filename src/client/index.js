@@ -18,16 +18,19 @@ const initialState = window.INITIAL_STATE;
 
 delete window.INITIAL_STATE;
 
+const axiosInstance = axios.create({
+  baseURL: '/',
+});
+
 const store = createStore(
   reducers,
   initialState,
-  composeEnhancers(applyMiddleware(thunk))
+  composeEnhancers(applyMiddleware(thunk.withExtraArgument(axiosInstance))),
 );
-
 
 hydrate(
   <Provider store={store}>
     <App />
   </Provider>,
-  document.getElementById('root')
+  document.getElementById('root'),
 );
