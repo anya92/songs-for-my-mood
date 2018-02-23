@@ -21,7 +21,7 @@ router.get('/auth/logout', authControllers.logout);
 router.get(
   '/api/recommended_songs',
   apiControllers.checkAccessToken,
-  apiControllers.getRecommendations(),
+  apiControllers.getRecommendations,
 );
 
 export default router;

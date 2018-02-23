@@ -1,16 +1,13 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import styled, { injectGlobal } from 'styled-components';
-import { fetchCurrentUser } from '../actions';
+import { fetchCurrentUser, fetchRecommendedSongs } from '../actions';
 
 import Header from './Header';
 import Quiz from './Quiz';
 import { LoginButton, Button } from './styled/Buttons';
 
 injectGlobal`
-  * {
-    box-sizing: border-box;
-  }
   body {
     font-size: 1.2em;
     font-family: lato ,ubuntu, sans-serif;
@@ -44,6 +41,7 @@ class App extends Component {
 
   submitAnswers(mood, danceability, energy) {
     this.setState(() => ({ startQuiz: false, startFetchingData: true }));
+    this.props.fetchRecommendedSongs(mood, danceability, energy);
     console.log('user answers:', this.props.auth._id, 'mood:', mood, 'danceability:', danceability, 'energy:', energy);
   }
 
@@ -78,4 +76,4 @@ function mapStateToProps({ auth }) {
   };
 }
 
-export default connect(mapStateToProps, { fetchCurrentUser })(App);
+export default connect(mapStateToProps, { fetchCurrentUser, fetchRecommendedSongs })(App);

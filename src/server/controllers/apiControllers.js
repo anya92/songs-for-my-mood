@@ -49,10 +49,19 @@ const getUserTop = async (type, req, res) => {
   return seeds;
 };
 
-export const getRecommendations = (mood, danceability, energy) => async (req, res) => {
+export const getRecommendations = async (req, res) => {
   const tracksPromise = getUserTop('tracks', req, res);
   const artistsPromise = getUserTop('artists', req, res);
   const [seedTracks, seedArtists] = await Promise.all([tracksPromise, artistsPromise]);
+
+  const {
+    min_valence,
+    max_valence,
+    min_danceability,
+    max_danceability,
+    min_energy,
+    max_energy,
+  } = req.query;
 
   const response = await axios({
     method: 'get',
@@ -61,18 +70,26 @@ export const getRecommendations = (mood, danceability, energy) => async (req, re
       seed_tracks: seedTracks,
       seed_artists: seedArtists,
       limit: 50,
-      min_valence: 0.0,
-      max_valence: 0.33,
-      min_danceability: 0.33,
-      max_danceability: 0.66,
-      min_energy: 0.0,
-      max_energy: 0.33,
+      min_valence,
+      max_valence,
+      min_danceability,
+      max_danceability,
+      min_energy,
+      max_energy,
     },
     headers: {
       Authorization: `Bearer ${req.cookies.accessToken || res.locals.accessToken}`,
     },
   });
-  const tracks = response.data.tracks.map(({ id, name, uri, album, artists, preview_url }) => ({
+  
+  const tracks = response.data.tracks.map(({
+    id,
+    name,
+    uri,
+    album,
+    artists,
+    preview_url,
+  }) => ({
     id,
     name,
     artist: artists[0].name,
@@ -84,5 +101,4 @@ export const getRecommendations = (mood, danceability, energy) => async (req, re
     preview_url,
   }));
   res.json(tracks);
-  // res.json(response.data);
 };
