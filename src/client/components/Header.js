@@ -4,7 +4,11 @@ import styled from 'styled-components';
 const StyledHeader = styled.div`
   position: fixed;
   top: 0;
+  left: 0;
   width: 100%;
+  height: 100px;
+  z-index: 4;
+  background-color: #52c7f9;
 `;
 
 const Header = ({ auth }) => {

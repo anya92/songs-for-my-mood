@@ -19,18 +19,9 @@ class Quiz extends Component {
     super(props);
     this.state = {
       questionNumber: 1,
-      mood: null,
-      danceability: null,
-      energy: null,
     };
-    this.handleAnswerClick = this.handleAnswerClick.bind(this);
-    this.handleButtonClick = this.handleButtonClick.bind(this);
-  }
 
-  handleAnswerClick(type, answer) {
-    this.setState(() => ({
-      [type]: answer,
-    }));
+    this.handleButtonClick = this.handleButtonClick.bind(this);
   }
 
   handleButtonClick() {
@@ -39,15 +30,14 @@ class Quiz extends Component {
         questionNumber: prevState.questionNumber + 1,
       }));
     } else {
-      const { mood, danceability, energy } = this.state;
+      const { mood, danceability, energy } = this.props;
       this.props.submitAnswers(mood.id, danceability.id, energy.id);
     }
   }
 
   renderQuestions() {
-    const {
-      questionNumber, mood, danceability, energy
-    } = this.state;
+    const { questionNumber } = this.state;
+    const { mood, danceability, energy } = this.props;
     let answers;
     switch (questionNumber) {
       case 1:
@@ -64,7 +54,7 @@ class Quiz extends Component {
             value={mood}
             question="Today I am"
             answers={answers}
-            handleAnswerClick={this.handleAnswerClick}
+            handleAnswerClick={this.props.handleAnswerClick}
             handleButtonClick={this.handleButtonClick}
           />
         );
@@ -80,7 +70,7 @@ class Quiz extends Component {
             value={danceability}
             question="I want to"
             answers={answers}
-            handleAnswerClick={this.handleAnswerClick}
+            handleAnswerClick={this.props.handleAnswerClick}
             handleButtonClick={this.handleButtonClick}
           />
         );
@@ -96,7 +86,7 @@ class Quiz extends Component {
             value={energy}
             question="Give me something"
             answers={answers}
-            handleAnswerClick={this.handleAnswerClick}
+            handleAnswerClick={this.props.handleAnswerClick}
             handleButtonClick={this.handleButtonClick}
           />
         );

@@ -62,43 +62,50 @@ export const getRecommendations = async (req, res) => {
     min_energy,
     max_energy,
   } = req.query;
-
-  const response = await axios({
-    method: 'get',
-    url: 'https://api.spotify.com/v1/recommendations',
-    params: {
-      seed_tracks: seedTracks,
-      seed_artists: seedArtists,
-      limit: 50,
-      min_valence,
-      max_valence,
-      min_danceability,
-      max_danceability,
-      min_energy,
-      max_energy,
-    },
-    headers: {
-      Authorization: `Bearer ${req.cookies.accessToken || res.locals.accessToken}`,
-    },
-  });
-  
-  const tracks = response.data.tracks.map(({
-    id,
-    name,
-    uri,
-    album,
-    artists,
-    preview_url,
-  }) => ({
-    id,
-    name,
-    artist: artists[0].name,
-    album: {
-      name: album.name,
-      image: album.images[0].url,
-    },
-    uri,
-    preview_url,
-  }));
-  res.json(tracks);
+  try {
+    const response = await axios({
+      method: 'get',
+      url: 'https://api.spotify.com/v1/recommendations',
+      params: {
+        seed_tracks: seedTracks,
+        seed_artists: seedArtists,
+        limit: 50,
+        min_valence,
+        max_valence,
+        min_danceability,
+        max_danceability,
+        min_energy,
+        max_energy,
+      },
+      headers: {
+        Authorization: `Bearer ${req.cookies.accessToken || res.locals.accessToken}`,
+      },
+    });
+    
+    const tracks = response.data.tracks.map(({
+      id,
+      name,
+      uri,
+      album,
+      artists,
+      preview_url,
+      duration_ms,
+    }) => ({
+      id,
+      name,
+      artist: artists[0].name,
+      album: {
+        name: album.name,
+        image: album.images[0].url,
+      },
+      uri,
+      preview_url,
+      duration_ms,
+    }));
+    res.json(tracks);
+  } catch (error) {
+    res.status(400).send({
+      message: 'Error!',
+    });
+  }
 };
