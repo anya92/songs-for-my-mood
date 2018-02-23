@@ -35,22 +35,29 @@ class App extends Component {
     super(props);
 
     this.state = {
-      valence: '',
-      energy: '',
-      danceabilty: '',
       startQuiz: false,
+      startFetchingData: false,
     };
+
+    this.submitAnswers = this.submitAnswers.bind(this);
+  }
+
+  submitAnswers(mood, danceability, energy) {
+    this.setState(() => ({ startQuiz: false, startFetchingData: true }));
+    console.log('user answers:', this.props.auth._id, 'mood:', mood, 'danceability:', danceability, 'energy:', energy);
   }
 
   renderContent() {
     const { auth } = this.props;
-    const { startQuiz } = this.state;
+    const { startQuiz, startFetchingData } = this.state;
     if (!auth) {
       return <LoginButton><a href="/auth/spotify">Login</a></LoginButton>;
-    } else if (!startQuiz) {
+    } else if (!startQuiz && !startFetchingData) {
       return <Button onClick={() => this.setState({ startQuiz: true })}>Start</Button>;
+    } else if (startQuiz) {
+      return <Quiz submitAnswers={this.submitAnswers} />;
     }
-    return <Quiz />;
+    return <div>FetchingData...</div>;
   }
 
   render() {

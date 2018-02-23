@@ -23,23 +23,31 @@ class Quiz extends Component {
       danceability: null,
       energy: null,
     };
+    this.handleAnswerClick = this.handleAnswerClick.bind(this);
+    this.handleButtonClick = this.handleButtonClick.bind(this);
   }
 
   handleAnswerClick(type, answer) {
-    console.log('answer', type, answer);
     this.setState(() => ({
       [type]: answer,
     }));
   }
 
   handleButtonClick() {
-    this.setState(prevState => ({
-      questionNumber: prevState.questionNumber + 1,
-    }));
+    if (this.state.questionNumber <= 2) {
+      this.setState(prevState => ({
+        questionNumber: prevState.questionNumber + 1,
+      }));
+    } else {
+      const { mood, danceability, energy } = this.state;
+      this.props.submitAnswers(mood.id, danceability.id, energy.id);
+    }
   }
 
   renderQuestions() {
-    const { questionNumber, mood, danceability, energy } = this.state;
+    const {
+      questionNumber, mood, danceability, energy
+    } = this.state;
     let answers;
     switch (questionNumber) {
       case 1:
@@ -48,16 +56,16 @@ class Quiz extends Component {
           { id: 2, title: 'angry', icon: angryEmoji },
           { id: 3, title: 'ok', icon: okEmoji },
           { id: 4, title: 'cheerful', icon: cheerfulEmoji },
-          { id: 5, title: 'happy', icon: happyEmoji },       
+          { id: 5, title: 'happy', icon: happyEmoji },
         ];
         return (
           <Question
-            type='mood'
+            type="mood"
             value={mood}
             question="Today I am"
             answers={answers}
-            handleAnswerClick={this.handleAnswerClick.bind(this)}
-            handleButtonClick={this.handleButtonClick.bind(this)}
+            handleAnswerClick={this.handleAnswerClick}
+            handleButtonClick={this.handleButtonClick}
           />
         );
       case 2:
@@ -68,12 +76,12 @@ class Quiz extends Component {
         ];
         return (
           <Question
-            type='danceability'
+            type="danceability"
             value={danceability}
             question="I want to"
             answers={answers}
-            handleAnswerClick={this.handleAnswerClick.bind(this)}
-            handleButtonClick={this.handleButtonClick.bind(this)}
+            handleAnswerClick={this.handleAnswerClick}
+            handleButtonClick={this.handleButtonClick}
           />
         );
       case 3:
@@ -84,12 +92,12 @@ class Quiz extends Component {
         ];
         return (
           <Question
-            type='energy'
+            type="energy"
             value={energy}
             question="Give me something"
             answers={answers}
-            handleAnswerClick={this.handleAnswerClick.bind(this)}
-            handleButtonClick={this.handleButtonClick.bind(this)}
+            handleAnswerClick={this.handleAnswerClick}
+            handleButtonClick={this.handleButtonClick}
           />
         );
       default:

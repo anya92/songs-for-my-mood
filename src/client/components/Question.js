@@ -1,15 +1,20 @@
 import React from 'react';
 
-import { QuestionContainer, Answers, Emoji } from './styled/Questions';
+import { QuestionContainer, Title, Answers, Emoji } from './styled/Questions';
 import { Button } from './styled/Buttons';
 
-const Question = ({ type, value, question, answers, handleAnswerClick, handleButtonClick }) => (
+const Question = ({
+  type, value, question, answers, handleAnswerClick, handleButtonClick,
+}) => (
   <QuestionContainer>
-    <p>{question} <strong>{value}</strong></p>
+    <Title>{question}<br /><strong>{value && value.title}</strong></Title>
     <Answers>
       {
         answers.map(answer => (
-          <Emoji key={answer.id} onClick={() => handleAnswerClick(type, answer.title)}>
+          <Emoji
+            key={answer.id}
+            onClick={() => handleAnswerClick(type, { title: answer.title, id: answer.id })}
+          >
             <img src={answer.icon} alt={answer.title} />
             <div>{answer.title}</div>
           </Emoji>
