@@ -5,7 +5,7 @@ import session from 'express-session';
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
 
-import * as authControllers from './controllers/authControllers';
+import router from './routes';
 import renderer from './helpers/renderer';
 import createStore from './helpers/createStore';
 import { fetchCurrentUser } from '../client/actions';
@@ -41,13 +41,7 @@ app.use(cookieParser());
 app.use(passport.initialize());
 app.use(passport.session());
 
-// SPOTIFY AUTHENTICATION
-
-app.get('/auth/spotify', authControllers.login);
-app.get('/auth/spotify/callback', authControllers.loginCallback);
-app.get('/auth/current_user', authControllers.getUser);
-app.get('/auth/logout', authControllers.logout);
-
+app.use('/', router);
 
 app.get('/api', (req, res) => res.json({ api: 'ok' }));
 
