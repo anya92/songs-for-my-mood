@@ -1,10 +1,11 @@
 import axios from 'axios';
 import _ from 'underscore';
+import moment from 'moment';
 
 export const catchErrors = fn => {
-	return function(req, res, next) {
-		return fn(req, res, next).catch(next);
-	};
+  return function(req, res, next) {
+    return fn(req, res, next).catch(next);
+  };
 };
 
 export const checkAccessToken = async (req, res, next) => {
@@ -104,8 +105,56 @@ export const getRecommendations = async (req, res) => {
     }));
     res.json(tracks);
   } catch (error) {
-    res.status(400).send({
-      message: 'Error!',
+    res.status(error.response.status).send({
+      message: error.response.statusText,
+    });
+  }
+};
+
+
+export const createPlaylist = async (req, res, next) => {
+  const name = `songsForMyMood: ${moment(Date.now()).format('Do MMM YYYY')}`;
+  const playlist = await axios({
+    url: `https://api.spotify.com/v1/users/${req.user.spotifyId}/playlists`,
+    method: 'post',
+    data: {
+      name,
+    },
+    headers: {
+      Authorization: `Bearer ${req.cookies.accessToken || res.locals.accessToken}`,
+      'Content-Type': 'application/json',
+    },
+  });
+  res.locals.playlistId = playlist.data.id;
+  next();
+};
+
+export const addTracks = async (req, res) => {
+  const { uris } = req.query;
+  try {
+    await axios({
+      url: `https://api.spotify.com/v1/users/${req.user.spotifyId}/playlists/${res.locals.playlistId}/tracks`,
+      method: 'post',
+      data: {
+        uris,
+      },
+      headers: {
+        Authorization: `Bearer ${req.cookies.accessToken || res.locals.accessToken}`,
+        'Content-Type': 'application/json',
+      },
+    });
+    const response = await axios({
+      url: `https://api.spotify.com/v1/users/${req.user.spotifyId}/playlists/${res.locals.playlistId}`,
+      method: 'get',
+      headers: {
+        Authorization: `Bearer ${req.cookies.accessToken || res.locals.accessToken}`,
+      },
+    });
+    const playlist = { uri: response.data.uri, image: response.data.images[0].url };
+    res.json(playlist);
+  } catch (error) {
+    res.status(error.response.status).send({
+      message: error.response.statusText,
     });
   }
 };

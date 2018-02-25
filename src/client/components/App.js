@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import styled, { injectGlobal } from 'styled-components';
-import { fetchCurrentUser, fetchRecommendedSongs } from '../actions';
+import { fetchCurrentUser, fetchRecommendedSongs, createPlaylist } from '../actions';
 
 import Header from './Header';
 import Quiz from './Quiz';
@@ -94,6 +94,12 @@ class App extends Component {
     }
   }
 
+  createPlaylist() {
+    const { data: tracks } = this.props.songs;
+    const uris = tracks.map(track => track.uri);
+    this.props.createPlaylist(uris);
+  }
+
   renderContent() {
     const { auth, songs: { data, status } } = this.props;
     const {
@@ -123,6 +129,7 @@ class App extends Component {
           <h1>Songs:</h1>
           <button onClick={() => this.submitAnswers()}>Get again</button>
           { getFullTime(data.reduce((total, song) => total + song.duration_ms, 0)) }
+          <button onClick={() => this.createPlaylist()}>Add to Spotify</button>
           <Tracks
             songs={data}
             playAudio={this.playAudio}
@@ -146,11 +153,12 @@ class App extends Component {
   }
 }
 
-function mapStateToProps({ auth, songs }) {
+function mapStateToProps({ auth, songs, playlist }) {
   return {
     auth,
     songs,
+    playlist,
   };
 }
 
-export default connect(mapStateToProps, { fetchCurrentUser, fetchRecommendedSongs })(App);
+export default connect(mapStateToProps, { fetchCurrentUser, fetchRecommendedSongs, createPlaylist })(App);

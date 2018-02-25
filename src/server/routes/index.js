@@ -24,4 +24,11 @@ router.get(
   apiControllers.getRecommendations,
 );
 
+router.get(
+  '/api/create_playlist',
+  apiControllers.checkAccessToken,
+  apiControllers.createPlaylist,
+  apiControllers.addTracks,
+);
+
 export default router;

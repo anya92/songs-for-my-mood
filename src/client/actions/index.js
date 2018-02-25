@@ -1,6 +1,7 @@
 import {
   FETCH_CURRENT_USER,
   FETCH_RECOMMENDED_SONGS,
+  CREATE_PLAYLIST,
 } from './types';
 
 import convertAttributes from '../helpers/convertAttributes';
@@ -41,5 +42,21 @@ export const fetchRecommendedSongs = (mood, danceability, energy) => async (disp
     dispatch({ type: FETCH_RECOMMENDED_SONGS, status: 'success', payload: res.data });
   } catch (error) {
     dispatch({ type: FETCH_RECOMMENDED_SONGS, status: 'error' });
+  }
+};
+
+export const createPlaylist = uris => async (dispatch, getState, api) => {
+  dispatch({ type: CREATE_PLAYLIST, status: 'loading' });
+  try {
+    const response = await api({
+      url: '/api/create_playlist',
+      method: 'get',
+      params: {
+        uris,
+      },
+    });
+    dispatch({ type: CREATE_PLAYLIST, status: 'success', payload: response.data });
+  } catch (error) {
+    dispatch({ type: CREATE_PLAYLIST, status: 'error' });
   }
 };
