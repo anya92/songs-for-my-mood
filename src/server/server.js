@@ -20,7 +20,7 @@ require('dotenv').config({ path: 'variables.env' });
 
 mongoose.connect(process.env.DATABASE_URL);
 
-mongoose.connection.on('error', console.log);
+mongoose.connection.on('error', error => console.log('database error', error));
 mongoose.Promise = global.Promise;
 
 require('./models/User');

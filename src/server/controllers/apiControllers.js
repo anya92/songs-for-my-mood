@@ -81,7 +81,7 @@ export const getRecommendations = async (req, res) => {
         Authorization: `Bearer ${req.cookies.accessToken || res.locals.accessToken}`,
       },
     });
-    
+
     const tracks = response.data.tracks.map(({
       id,
       name,
@@ -96,7 +96,7 @@ export const getRecommendations = async (req, res) => {
       artist: artists[0].name,
       album: {
         name: album.name,
-        image: album.images[0].url,
+        image: album.images[album.images.length - 1].url,
       },
       uri,
       preview_url,

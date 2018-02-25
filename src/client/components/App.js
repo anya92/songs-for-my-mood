@@ -8,13 +8,15 @@ import Quiz from './Quiz';
 import Tracks from './Tracks';
 import { LoginButton, Button } from './styled/Buttons';
 
+import { getFullTime } from '../helpers/convertMS';
+
 // import sampleData from '../helpers/sampleData';
 
 injectGlobal`
   body {
     font-size: 1.2em;
     font-family: lato ,ubuntu, sans-serif;
-    color: #F0F0F0;
+    color: #555;
   }
 `;
 
@@ -37,13 +39,17 @@ class App extends Component {
     this.state = {
       startQuiz: false,
       fetchingData: false,
-      mood: null, 
+      mood: null,
       danceability: null,
       energy: null,
+      playing: false,
+      audio: null,
+      playingURL: '',
     };
 
     this.handleAnswerClick = this.handleAnswerClick.bind(this);
     this.submitAnswers = this.submitAnswers.bind(this);
+    this.playAudio = this.playAudio.bind(this);
   }
 
   handleAnswerClick(type, answer) {
@@ -53,14 +59,46 @@ class App extends Component {
   }
 
   submitAnswers() {
-    this.setState(() => ({ startQuiz: false, fetchingData: true }));
-    const { mood, danceability, energy } = this.state;
+    const { mood, danceability, energy, audio } = this.state;
+    audio && audio.pause();
+    this.setState(() => ({ startQuiz: false, fetchingData: true, playing: false, playingURL: '', audio: null }));
     this.props.fetchRecommendedSongs(mood, danceability, energy);
   }
 
+  playAudio(preview_url) {
+    const audio = new Audio(preview_url);
+    audio.onended = () => this.setState(() => ({ playing: false, playingURL: '' }));
+    if (!this.state.playing) {
+      audio.play();
+      this.setState(() => ({
+        playing: true,
+        playingURL: preview_url,
+        audio,
+      }));
+    } else {
+      if (this.state.playingURL === preview_url) {
+        this.state.audio.pause();
+        this.setState(() => ({
+          playing: false,
+          playingURL: '',
+        }));
+      } else {
+        this.state.audio.pause();
+        audio.play();
+        this.setState(() => ({
+          playing: true,
+          playingURL: preview_url,
+          audio,
+        }));
+      }
+    }
+  }
+
   renderContent() {
-    const { auth, songs: { data, status} } = this.props;
-    const { startQuiz, fetchingData, mood, danceability, energy } = this.state;
+    const { auth, songs: { data, status } } = this.props;
+    const {
+      startQuiz, fetchingData, mood, danceability, energy,
+    } = this.state;
     if (!auth) {
       return <LoginButton><a href="/auth/spotify">Login</a></LoginButton>;
     } else if (!startQuiz && !fetchingData) {
@@ -78,13 +116,18 @@ class App extends Component {
     } else if (status === 'loading') {
       return <div>Fetching data...</div>;
     } else if (status === 'error') {
-      return <div>Something wrong happed...</div>;
+      return <div>Something wrong happened...</div>;
     } else if (status === 'success') {
       return (
         <div>
           <h1>Songs:</h1>
           <button onClick={() => this.submitAnswers()}>Get again</button>
-          <Tracks songs={data} />
+          { getFullTime(data.reduce((total, song) => total + song.duration_ms, 0)) }
+          <Tracks
+            songs={data}
+            playAudio={this.playAudio}
+            playingURL={this.state.playingURL}
+          />
         </div>
       );
     }

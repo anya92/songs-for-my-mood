@@ -78,21 +78,32 @@ const Time = styled.div`
   font-weight: 300;
 `;
 
-const Tracks = ({ songs }) => (
+const Tracks = ({ songs, playAudio, playingURL }) => (
   <TracksContainer>
     {
-      songs.map(({ id, uri, name, album, artist, duration_ms }) => (
-        <Track key={id}>
-          <Image><a href={uri}><img src={album.image} alt={album.name} /></a></Image>
-          <Info>
-            <Title><a href={uri}>{name}</a></Title>
-            <Artist>{artist}</Artist>
-          </Info> 
-          <Play>
-            <Icon><img src={playIcon} alt="" /></Icon>
-            <Time>{convertMS(duration_ms)}</Time>
-          </Play>
-        </Track>
+      songs.map(({
+ id, uri, name, album, artist, duration_ms, preview_url,
+}) => (
+  <Track key={id}>
+    <Image><a href={uri}><img src={album.image} alt={album.name} /></a></Image>
+    <Info>
+      <Title><a href={uri}>{name}</a></Title>
+      <Artist>{artist}</Artist>
+    </Info>
+    <Play>
+      {
+        preview_url && (
+          <Icon onClick={() => playAudio(preview_url)}>
+            <img
+              src={playingURL === preview_url ? pauseIcon : playIcon}
+              alt={playingURL === preview_url ? 'pause' : 'play'}
+            />
+          </Icon>
+        )
+      }
+      <Time>{convertMS(duration_ms)}</Time>
+    </Play>
+  </Track>
       ))
     }
   </TracksContainer>
