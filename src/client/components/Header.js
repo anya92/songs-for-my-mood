@@ -2,13 +2,26 @@ import React from 'react';
 import styled from 'styled-components';
 
 const StyledHeader = styled.div`
-  position: fixed;
+  position: absolute;
   top: 0;
   left: 0;
   width: 100%;
-  height: 100px;
   z-index: 4;
-  background-color: #52c7f9;
+  padding: 20px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  a {
+    color: #f7f1e3;
+    font-size: 18px;
+    font-weight: 500;
+  }
+`;
+
+const Title = styled.div`
+  font-size: 30px;
+  font-family: 'gochi hand', cursive;
+  flex: 1 1;
 `;
 
 const Header = ({ auth }) => {
@@ -20,6 +33,7 @@ const Header = ({ auth }) => {
     default:
       return (
         <StyledHeader>
+          <Title>songs for my mood</Title>
           <a href="/auth/logout">Logout</a>
         </StyledHeader>
       );

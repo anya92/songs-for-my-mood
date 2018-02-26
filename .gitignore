@@ -1,5 +1,6 @@
 node_modules
 variables.env
+.vscode
 build
 public
 src/client/helpers/sampleData.js

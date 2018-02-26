@@ -3,10 +3,14 @@ import { connect } from 'react-redux';
 import styled, { injectGlobal } from 'styled-components';
 import { fetchCurrentUser, fetchRecommendedSongs, createPlaylist } from '../actions';
 
+import Home from './Home';
 import Header from './Header';
 import Quiz from './Quiz';
 import Tracks from './Tracks';
-import { LoginButton, Button } from './styled/Buttons';
+
+import { Container } from './styled/Layout';
+import { Button } from './styled/Buttons';
+import media from './styled/mediaQueries';
 
 import { getFullTime } from '../helpers/convertMS';
 
@@ -14,22 +18,40 @@ import { getFullTime } from '../helpers/convertMS';
 
 injectGlobal`
   body {
-    font-size: 1.2em;
-    font-family: lato ,ubuntu, sans-serif;
-    color: #555;
+    position: relative;
+    padding-bottom: 144px;
+    ${media.small`
+      padding-bottom: 128px;
+    `}
+    ${media.medium`
+      padding-bottom: 56px;
+    `}
   }
-`;
+`
 
-const Container = styled.div`
-  min-height: 100vh;
-  max-width: 1000px;
-  margin: 0 auto;
-  padding: 100px 15px 20px 15px;
+const Footer = styled.div`
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  background-color: #FFF;
+  text-align: center;
+  padding: 10px 20px;
+  color: #555;
+  background-color: #f7f1e3;
+  font-size: 14px;
+  div {
+    margin: 10px 5px;
+  }
+  a {
+    color: #555;
+    font-weight: 600;
+  }
+  ${media.medium`
+    flex-direction: row;
+    justify-content: space-between;
+  `}
 `;
 
 class App extends Component {
@@ -37,19 +59,24 @@ class App extends Component {
     super(props);
 
     this.state = {
-      startQuiz: false,
+      startQuiz: true,
       fetchingData: false,
-      mood: null,
-      danceability: null,
-      energy: null,
+      mood: { title: '', id: null },
+      danceability: { title: '', id: null },
+      energy: { title: '', id: null },
       playing: false,
       audio: null,
       playingURL: '',
     };
 
+    this.startQuiz = this.startQuiz.bind(this);
     this.handleAnswerClick = this.handleAnswerClick.bind(this);
     this.submitAnswers = this.submitAnswers.bind(this);
     this.playAudio = this.playAudio.bind(this);
+  }
+
+  startQuiz() {
+    this.setState(() => ({ startQuiz: true }));
   }
 
   handleAnswerClick(type, answer) {
@@ -59,9 +86,13 @@ class App extends Component {
   }
 
   submitAnswers() {
-    const { mood, danceability, energy, audio } = this.state;
+    const {
+      mood, danceability, energy, audio,
+    } = this.state;
     audio && audio.pause();
-    this.setState(() => ({ startQuiz: false, fetchingData: true, playing: false, playingURL: '', audio: null }));
+    this.setState(() => ({
+      startQuiz: false, fetchingData: true, playing: false, playingURL: '', audio: null,
+    }));
     this.props.fetchRecommendedSongs(mood, danceability, energy);
   }
 
@@ -105,10 +136,8 @@ class App extends Component {
     const {
       startQuiz, fetchingData, mood, danceability, energy,
     } = this.state;
-    if (!auth) {
-      return <LoginButton><a href="/auth/spotify">Login</a></LoginButton>;
-    } else if (!startQuiz && !fetchingData) {
-      return <Button onClick={() => this.setState({ startQuiz: true })}>Start</Button>;
+    if (!auth || (!startQuiz && !fetchingData)) {
+      return <Home logged={auth} startQuiz={this.startQuiz} />;
     } else if (startQuiz) {
       return (
         <Quiz
@@ -122,14 +151,14 @@ class App extends Component {
     } else if (status === 'loading') {
       return <div>Fetching data...</div>;
     } else if (status === 'error') {
-      return <div>Something wrong happened...</div>;
+      return <div>Something wrong happened... Try again later.</div>;
     } else if (status === 'success') {
       return (
         <div>
-          <h1>Songs:</h1>
-          <button onClick={() => this.submitAnswers()}>Get again</button>
+          <div>Songs:</div>
+          <Button onClick={() => this.submitAnswers()}>Get again</Button>
           { getFullTime(data.reduce((total, song) => total + song.duration_ms, 0)) }
-          <button onClick={() => this.createPlaylist()}>Add to Spotify</button>
+          <Button onClick={() => this.createPlaylist()}>Add to Spotify</Button>
           <Tracks
             songs={data}
             playAudio={this.playAudio}
@@ -145,9 +174,12 @@ class App extends Component {
     return this.props.auth == null ? <div>Loading...</div> : (
       <Container>
         <Header auth={this.props.auth} />
-        {/* <div>songsForMyMood</div>
-        <div>Create playlist based on your current mood.</div> */}
         { this.renderContent() }
+        <Footer>
+          <div>enjoyed with <a href="https://developer.spotify.com/web-api/" target="_blank" rel="noopener noreferrer">Spotify Web API</a></div>
+          <div>icons designed by Vectors Market, Twitter and Roundicons from <a href="https://flaticon.com" target="_blank" rel="noopener noreferrer">Flaticon</a></div>
+          <div>created by <a href="https://github.com/anya92" target="_blank" rel="noopener noreferrer">anya92</a></div>
+        </Footer>
       </Container>
     );
   }

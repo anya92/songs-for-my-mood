@@ -6,14 +6,19 @@ import playIcon from '../assets/play.png';
 import pauseIcon from '../assets/pause.png';
 
 const TracksContainer = styled.div`
+  max-width: 800px;
+  margin: 0 auto;
   color: #555;
   padding: 20px 0;
   font-family: ubuntu;
+  display: grid;
+  grid-gap: 10px;
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr;
 `;
 
 const Track = styled.div`
-  height: 82px;
-  padding: 10px;
+  padding: 10px 5px;
   display: flex;
   align-items: center;
   position: relative;

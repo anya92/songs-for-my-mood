@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
 import sadEmoji from '../assets/sad.png';
 import angryEmoji from '../assets/angry.png';
-import okEmoji from '../assets/ok.png';
+import fineEmoji from '../assets/fine.png';
 import cheerfulEmoji from '../assets/cheerful.png';
 import happyEmoji from '../assets/happy.png';
 import bedIcon from '../assets/bed.png';
@@ -44,7 +45,7 @@ class Quiz extends Component {
         answers = [
           { id: 1, title: 'sad', icon: sadEmoji },
           { id: 2, title: 'angry', icon: angryEmoji },
-          { id: 3, title: 'ok', icon: okEmoji },
+          { id: 3, title: 'fine', icon: fineEmoji },
           { id: 4, title: 'cheerful', icon: cheerfulEmoji },
           { id: 5, title: 'happy', icon: happyEmoji },
         ];
@@ -99,10 +100,26 @@ class Quiz extends Component {
     return (
       <div>
         { this.renderQuestions() }
-        <div>Icons designed by Vectors Market, Twitter and Roundicons from Flaticon</div>
       </div>
     );
   }
 }
+
+Quiz.propTypes = {
+  handleAnswerClick: PropTypes.func.isRequired,
+  submitAnswers: PropTypes.func.isRequired,
+  mood: PropTypes.shape({
+    title: PropTypes.string,
+    id: PropTypes.oneOfType([PropTypes.oneOf([null]), PropTypes.number]),
+  }).isRequired,
+  danceability: PropTypes.shape({
+    title: PropTypes.string,
+    id: PropTypes.oneOfType([PropTypes.oneOf([null]), PropTypes.number]),
+  }).isRequired,
+  energy: PropTypes.shape({
+    title: PropTypes.string,
+    id: PropTypes.oneOfType([PropTypes.oneOf([null]), PropTypes.number]),
+  }).isRequired,
+};
 
 export default Quiz;

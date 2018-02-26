@@ -1,25 +1,26 @@
 import styled from 'styled-components';
 
-export const LoginButton = styled.div`
+export const ButtonWithLink = styled.div`
   margin: 20px 0;
   height: 100px;
   display: inline-flex;
   align-items: center;
   a {
-    font-size: 20px;
-    font-weight: 700;
-    background-color: khaki;
+    font-size: 18px;
+    font-weight: 500;
+    font-family: ubuntu, sans-serif;
+    background-color: #ffda79;
     border-radius: 8px;
     position: relative;
-    box-shadow: 0px 6px #eadc5f;
+    box-shadow: 0px 6px #ccae62;
     text-transform: uppercase;
     letter-spacing: 2px;
     color: #555;
     text-decoration: none;
-    padding: 20px 80px;
+    padding: 20px;
     &:hover {
       top: 2px;
-      box-shadow: 0px 4px #eadc5f;
+      box-shadow: 0px 4px #ccae62;
     }
     &:active {
       top: 6px;
@@ -30,27 +31,29 @@ export const LoginButton = styled.div`
 
 export const Button = styled.button`
   ${props => (props.hide
-    ? 'opacity: 0; z-index: -10;'
-    : 'opacity: 1; z-index: 1;'
+    ? 'opacity: 0; z-index: -10; visibility: hidden; '
+    : 'opacity: 1; z-index: 1; visibility: visible; '
   )};
-  transition: opacity .4s ease-in-out;
+  transition: all .3s ease-in-out;
   font-size: 20px;
-  font-weight: 700;
-  background-color: khaki;
+  font-weight: 500;
+  min-width: 255px;
+  background-color: #ffda79;
   border: none;
   border-radius: 8px;
   position: relative;
-  box-shadow: 0px 6px #eadc5f;
+  box-shadow: 0px 6px #ccae62;
   text-transform: uppercase;
   letter-spacing: 2px;
+  font-family: ubuntu, sans-serif;
   color: #555;
   outline: none;
-  padding: 20px 80px;
-  margin: 20px 0;
+  padding: 20px;
+  margin: 40px 0;
   cursor: pointer;
   &:hover {
     top: 2px;
-    box-shadow: 0px 4px #eadc5f;
+    box-shadow: 0px 4px #ccae62;
   }
   &:active {
     top: 6px;

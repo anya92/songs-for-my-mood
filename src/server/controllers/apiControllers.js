@@ -113,7 +113,7 @@ export const getRecommendations = async (req, res) => {
 
 
 export const createPlaylist = async (req, res, next) => {
-  const name = `songsForMyMood: ${moment(Date.now()).format('Do MMM YYYY')}`;
+  const name = `songsForMyMood: ${moment(Date.now()).format('MMM Do YYYY')}`;
   const playlist = await axios({
     url: `https://api.spotify.com/v1/users/${req.user.spotifyId}/playlists`,
     method: 'post',

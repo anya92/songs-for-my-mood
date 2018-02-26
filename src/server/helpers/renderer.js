@@ -18,7 +18,7 @@ export default (req, store) => {
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>My App</title>
         <link rel="stylesheet" href="https://unpkg.com/modern-normalize@0.4.0/modern-normalize.css">
-        <link href="https://fonts.googleapis.com/css?family=Ubuntu:300,400,500,600,700|Lato:300,400,700" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=Ubuntu:300,400,500,600|Gochi+Hand" rel="stylesheet">
         ${styleTags}
       </head>
       <body>

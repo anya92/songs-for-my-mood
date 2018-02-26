@@ -1,10 +1,16 @@
 import styled from 'styled-components';
+import media from './mediaQueries';
 
 export const QuestionContainer = styled.div`
-  font-family: ubuntu;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
   text-align: center;
-  visibility: hidden;
-  animation: display .3s .5s ease-in-out forwards;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 60px 20px 20px 20px;
   @keyframes display {
     from { visibility: hidden; opacity: 0; }
     to { visibility: visible; opacity: 1; }
@@ -12,53 +18,92 @@ export const QuestionContainer = styled.div`
 `;
 
 export const Title = styled.div`
-  height: 150px;
-  font-size: 2.2rem;
+  height: 120px;
+  font-size: 28px;
   font-weight: 300;
   line-height: 1.5;
+  visibility: hidden;
+  opacity: 0;
+  animation: display .3s .5s ease-in-out forwards;  
   strong {
-    font-size: 2.5rem
-    font-weight: 700;
+    font-size: 28px;
+    font-weight: 600;
     color: khaki;
     text-transform: uppercase;
   }
+  ${media.small`
+    font-size: 30px;
+    strong {
+      font-size: 34px;
+    }
+  `}
+  ${media.medium`
+    font-size: 34px;
+    strong {
+      font-size: 38px;
+    }
+  `}
 `;
 
 export const Answers = styled.div`
-  margin: 20px 0;
+  margin-top: 20px;
   display: flex;
-  justify-content: center;
+  justify-content: space-around;
   flex-wrap: wrap;
+  visibility: hidden;
+  opacity: 0;
+  animation: display .3s .5s ease-in-out forwards;
 `;
 
 export const Emoji = styled.div`
-  margin: 0 20px;
+  margin: 10px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  flex-basis: 120px;
+  flex-basis: 80px;
   img {
     cursor: pointer;
-    width: 120px;
-    height: 120px;
+    width: 80px;
+    height: 80px;
     transition: transform .3s ease-in-out;
   }
   div {
-    margin-top: 10px;
-    opacity: 0;
-    visibility: hidden;
-    font-size: 1.2rem;
-    font-weight: 400;
-    text-transform: uppercase;
-    transition: all .3s ease-in-out;
+    display: none;
   }
-  &:hover {
+  ${media.small`
+  flex-basis: 100px;
     img {
-      transform: scale(1.1);
+      width: 100px;
+      height: 100px;
     }
     div {
-      visibility: visible;
-      opacity: 1;
+      display: block;
+      opacity: 0;
+      visibility: hidden;
+      margin-top: 20px;
+      font-size: 16px;
+      font-weight: 300;
+      text-transform: uppercase;
+      transition: all .3s ease-in-out;
     }
-  }
+    &:hover {
+      img {
+        transform: scale(1.1);
+      }
+      div {
+        visibility: visible;
+        opacity: 1;
+      }
+    }
+  `}
+  ${media.medium`
+    flex-basis: 120px;
+    img {
+      width: 120px;
+      height: 120px;
+    }
+    div {
+      font-size: 20px;
+    }
+  `}
 `;
