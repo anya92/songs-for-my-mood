@@ -1,18 +1,18 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import styled, { injectGlobal } from 'styled-components';
 import { fetchCurrentUser, fetchRecommendedSongs, createPlaylist } from '../actions';
 
-import Home from './Home';
 import Header from './Header';
+import Footer from './Footer';
+import Home from './Home';
 import Quiz from './Quiz';
-import Tracks from './Tracks';
+import Results from './Results';
 
 import { Container } from './styled/Layout';
-import { Button } from './styled/Buttons';
+import { Button, ButtonWithLink } from './styled/Buttons';
 import media from './styled/mediaQueries';
-
-import { getFullTime } from '../helpers/convertMS';
 
 // import sampleData from '../helpers/sampleData';
 
@@ -27,31 +27,14 @@ injectGlobal`
       padding-bottom: 56px;
     `}
   }
-`
+`;
 
-const Footer = styled.div`
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
+const Loader = styled.div`
+  height: 100%;
+  color: #f7f1e3;
   display: flex;
-  flex-direction: column;
-  text-align: center;
-  padding: 10px 20px;
-  color: #555;
-  background-color: #f7f1e3;
-  font-size: 14px;
-  div {
-    margin: 10px 5px;
-  }
-  a {
-    color: #555;
-    font-weight: 600;
-  }
-  ${media.medium`
-    flex-direction: row;
-    justify-content: space-between;
-  `}
+  justify-content: center;
+  align-items: center;
 `;
 
 class App extends Component {
@@ -59,7 +42,7 @@ class App extends Component {
     super(props);
 
     this.state = {
-      startQuiz: true,
+      startQuiz: false,
       fetchingData: false,
       mood: { title: '', id: null },
       danceability: { title: '', id: null },
@@ -67,12 +50,14 @@ class App extends Component {
       playing: false,
       audio: null,
       playingURL: '',
+      playlist: false,
     };
 
     this.startQuiz = this.startQuiz.bind(this);
     this.handleAnswerClick = this.handleAnswerClick.bind(this);
     this.submitAnswers = this.submitAnswers.bind(this);
     this.playAudio = this.playAudio.bind(this);
+    this.renderPlaylistButton = this.renderPlaylistButton.bind(this);
   }
 
   startQuiz() {
@@ -91,7 +76,12 @@ class App extends Component {
     } = this.state;
     audio && audio.pause();
     this.setState(() => ({
-      startQuiz: false, fetchingData: true, playing: false, playingURL: '', audio: null,
+      startQuiz: false,
+      fetchingData: true,
+      playing: false,
+      playingURL: '',
+      audio: null,
+      playlist: false,
     }));
     this.props.fetchRecommendedSongs(mood, danceability, energy);
   }
@@ -129,6 +119,22 @@ class App extends Component {
     const { data: tracks } = this.props.songs;
     const uris = tracks.map(track => track.uri);
     this.props.createPlaylist(uris);
+    this.setState(() => ({ playlist: true }));
+  }
+
+  renderPlaylistButton() {
+    const { playlist } = this.state;
+    const { playlist: { data, status } } = this.props;
+    if (!playlist) {
+      return <Button onClick={() => this.createPlaylist()}>Add to Spotify</Button>;
+    } else if (status === 'loading') {
+      return <Button>Loading...</Button>;
+    } else if (status === 'success') {
+      return <ButtonWithLink><a href={data.uri}>Open in Spotify</a></ButtonWithLink>;
+    } else if (status === 'error') {
+      return <div>Something wrong happened... Try again later.</div>;
+    }
+    return <div />;
   }
 
   renderContent() {
@@ -149,22 +155,18 @@ class App extends Component {
         />
       );
     } else if (status === 'loading') {
-      return <div>Fetching data...</div>;
+      return <Loader>Loading...</Loader>;
     } else if (status === 'error') {
       return <div>Something wrong happened... Try again later.</div>;
     } else if (status === 'success') {
       return (
-        <div>
-          <div>Songs:</div>
-          <Button onClick={() => this.submitAnswers()}>Get again</Button>
-          { getFullTime(data.reduce((total, song) => total + song.duration_ms, 0)) }
-          <Button onClick={() => this.createPlaylist()}>Add to Spotify</Button>
-          <Tracks
-            songs={data}
-            playAudio={this.playAudio}
-            playingURL={this.state.playingURL}
-          />
-        </div>
+        <Results
+          songs={data}
+          submitAnswers={this.submitAnswers}
+          renderPlaylistButton={this.renderPlaylistButton}
+          playAudio={this.playAudio}
+          playingURL={this.state.playingURL}
+        />
       );
     }
     return <div />;
@@ -173,17 +175,26 @@ class App extends Component {
   render() {
     return this.props.auth == null ? <div>Loading...</div> : (
       <Container>
-        <Header auth={this.props.auth} />
+        <Header auth={this.props.auth} startQuiz={this.state.startQuiz} />
         { this.renderContent() }
-        <Footer>
-          <div>enjoyed with <a href="https://developer.spotify.com/web-api/" target="_blank" rel="noopener noreferrer">Spotify Web API</a></div>
-          <div>icons designed by Vectors Market, Twitter and Roundicons from <a href="https://flaticon.com" target="_blank" rel="noopener noreferrer">Flaticon</a></div>
-          <div>created by <a href="https://github.com/anya92" target="_blank" rel="noopener noreferrer">anya92</a></div>
-        </Footer>
+        <Footer />
       </Container>
     );
   }
 }
+
+App.propTypes = {
+  auth: PropTypes.oneOfType([
+    PropTypes.oneOf([null]),
+    PropTypes.bool,
+    PropTypes.object,
+  ]).isRequired,
+  songs: PropTypes.object.isRequired,
+  playlist: PropTypes.object.isRequired,
+  fetchCurrentUser: PropTypes.func.isRequired,
+  fetchRecommendedSongs: PropTypes.func.isRequired,
+  createPlaylist: PropTypes.func.isRequired,
+};
 
 function mapStateToProps({ auth, songs, playlist }) {
   return {
@@ -193,4 +204,8 @@ function mapStateToProps({ auth, songs, playlist }) {
   };
 }
 
-export default connect(mapStateToProps, { fetchCurrentUser, fetchRecommendedSongs, createPlaylist })(App);
+export default connect(mapStateToProps, {
+  fetchCurrentUser,
+  fetchRecommendedSongs,
+  createPlaylist,
+})(App);

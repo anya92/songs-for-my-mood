@@ -10,7 +10,8 @@ const StyledHeader = styled.div`
   padding: 20px;
   display: flex;
   justify-content: space-around;
-  align-items: center;
+  align-items: baseline;
+  background-color: #34ace0;
   a {
     color: #f7f1e3;
     font-size: 18px;
@@ -19,7 +20,7 @@ const StyledHeader = styled.div`
 `;
 
 const Title = styled.div`
-  font-size: 30px;
+  font-size: 28px;
   font-family: 'gochi hand', cursive;
   flex: 1 1;
 `;

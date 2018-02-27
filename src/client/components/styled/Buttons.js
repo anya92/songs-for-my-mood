@@ -1,8 +1,7 @@
 import styled from 'styled-components';
 
 export const ButtonWithLink = styled.div`
-  margin: 20px 0;
-  height: 100px;
+  margin-top: 20px;
   display: inline-flex;
   align-items: center;
   a {
@@ -35,7 +34,7 @@ export const Button = styled.button`
     : 'opacity: 1; z-index: 1; visibility: visible; '
   )};
   transition: all .3s ease-in-out;
-  font-size: 20px;
+  font-size: 18px;
   font-weight: 500;
   min-width: 255px;
   background-color: #ffda79;
@@ -49,7 +48,7 @@ export const Button = styled.button`
   color: #555;
   outline: none;
   padding: 20px;
-  margin: 40px 0;
+  margin-top: 20px;
   cursor: pointer;
   &:hover {
     top: 2px;

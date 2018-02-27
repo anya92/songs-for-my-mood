@@ -5,12 +5,11 @@ export const QuestionContainer = styled.div`
   height: 100vh;
   display: flex;
   flex-direction: column;
-  justify-content: space-around;
   align-items: center;
   text-align: center;
   max-width: 800px;
   margin: 0 auto;
-  padding: 60px 20px 20px 20px;
+  padding: 80px 20px 20px 20px;
   @keyframes display {
     from { visibility: hidden; opacity: 0; }
     to { visibility: visible; opacity: 1; }
