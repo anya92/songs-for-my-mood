@@ -3,16 +3,22 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
+    "start": "node build/bundle.js",
     "dev:server": "nodemon --watch build --exec node build/bundle.js",
     "dev": "npm-run-all --parallel dev:*",
-    "dev:build-server": "webpack --config webpack.server.js --watch --colors",
-    "dev:build-client": "webpack --config webpack.client.js --watch --colors"
+    "dev:build-server": "webpack --config webpack.server.js --watch --colors --mode development",
+    "dev:build-client": "webpack --config webpack.client.js --watch --colors --mode development",
+    "prod:build-server": "webpack --config webpack.server.js --mode production",
+    "prod:build-client": "webpack --config webpack.client.js --mode production",
+    "prod": "npm-run-all --parallel prod:*",
+    "heroku-postbuild": "yarn --production=false && yarn run prod"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
     "axios": "^0.18.0",
+    "clean-webpack-plugin": "^0.1.18",
     "connect-mongo": "^2.0.1",
     "cookie-parser": "^1.4.3",
     "cors": "^2.8.4",
@@ -34,7 +40,8 @@
     "redux-thunk": "^2.2.0",
     "serialize-javascript": "^1.4.0",
     "styled-components": "^3.1.6",
-    "underscore": "^1.8.3"
+    "underscore": "^1.8.3",
+    "webpack-cli": "^2.0.9"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
@@ -55,9 +62,9 @@
     "image-webpack-loader": "^4.1.0",
     "nodemon": "^1.15.1",
     "npm-run-all": "^4.1.2",
-    "webpack": "^3.11.0",
+    "webpack": "^4.0.1",
     "webpack-dev-server": "^2.11.1",
-    "webpack-merge": "^4.1.1",
+    "webpack-merge": "^4.1.2",
     "webpack-node-externals": "^1.6.0"
   }
 }

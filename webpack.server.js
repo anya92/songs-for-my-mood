@@ -8,11 +8,11 @@ const config = {
   entry: './src/server/index.js',
   output: {
     path: path.resolve(__dirname, 'build'),
-    filename: 'bundle.js'
+    filename: 'bundle.js',
   },
   externals: [
-    nodeExternals()
-  ]
+    nodeExternals(),
+  ],
 };
 
 module.exports = merge(baseConfig, config);

@@ -1,3 +1,6 @@
+const webpack = require('webpack');
+const CleanWebpackPlugin = require('clean-webpack-plugin');
+
 module.exports = {
   module: {
     rules: [
@@ -9,7 +12,7 @@ module.exports = {
           presets: [
             'react',
             'stage-0',
-            ['env', {targets: {browser: ['last 2 versions']}}],
+            ['env', { targets: { browser: ['last 2 versions'] } }],
           ],
         },
       },
@@ -18,8 +21,8 @@ module.exports = {
         use: [
           'file-loader?name=assets/[name]-[hash:6].[ext]',
           'image-webpack-loader',
-        ]
-      }
+        ],
+      },
     ],
   },
 };

@@ -10,13 +10,12 @@ export default (req, store) => {
   const sheet = new ServerStyleSheet();
   const content = renderToString(sheet.collectStyles(<Provider store={store}><App /></Provider>));
   const styleTags = sheet.getStyleTags();
-  // console.log('store', store.getState());
 
   return `
     <html>
       <head>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>My App</title>
+        <title>songs for my mood</title>
         <link rel="stylesheet" href="https://unpkg.com/modern-normalize@0.4.0/modern-normalize.css">
         <link href="https://fonts.googleapis.com/css?family=Ubuntu:300,400,500,600|Gochi+Hand" rel="stylesheet">
         ${styleTags}

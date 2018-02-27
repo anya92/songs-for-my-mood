@@ -2,11 +2,11 @@ import axios from 'axios';
 import _ from 'underscore';
 import moment from 'moment';
 
-export const catchErrors = fn => {
-  return function(req, res, next) {
-    return fn(req, res, next).catch(next);
-  };
-};
+// export const catchErrors = fn => {
+//   return function(req, res, next) {
+//     return fn(req, res, next).catch(next);
+//   };
+// };
 
 export const checkAccessToken = async (req, res, next) => {
   if (!req.cookies.accessToken) {
@@ -143,14 +143,15 @@ export const addTracks = async (req, res) => {
         'Content-Type': 'application/json',
       },
     });
-    const response = await axios({
-      url: `https://api.spotify.com/v1/users/${req.user.spotifyId}/playlists/${res.locals.playlistId}`,
-      method: 'get',
-      headers: {
-        Authorization: `Bearer ${req.cookies.accessToken || res.locals.accessToken}`,
-      },
-    });
-    const playlist = { uri: response.data.uri, image: response.data.images[0].url };
+    // const response = await axios({
+    //   url: `https://api.spotify.com/v1/users/${req.user.spotifyId}/playlists/${res.locals.playlistId}`,
+    //   method: 'get',
+    //   headers: {
+    //     Authorization: `Bearer ${req.cookies.accessToken || res.locals.accessToken}`,
+    //   },
+    // });
+    // const playlist = { uri: response.data.uri, image: response.data.images[0].url };
+    const playlist = { uri: `spotify:${req.user.spotifyId}:playlist:${res.locals.playlistId}` };
     res.json(playlist);
   } catch (error) {
     res.status(error.response.status).send({
