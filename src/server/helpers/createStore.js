@@ -5,7 +5,7 @@ import reducers from '../../client/reducers';
 
 export default (req) => {
   const axiosInstance = axios.create({
-    baseURL: 'http://localhost:8080',
+    baseURL: process.env.AXIOS_BASE_URL,
     headers: { cookie: req.get('cookie') || '' },
   });
   const store = createStore(reducers, {}, applyMiddleware(thunk.withExtraArgument(axiosInstance)));
