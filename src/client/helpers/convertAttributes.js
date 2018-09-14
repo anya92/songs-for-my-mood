@@ -7,17 +7,17 @@ export default (mood, danceability, energy) => {
   let max_energy;
 
   switch (mood) {
-    case 1:
-    case 2:
+    case 'sad':
+    case 'angry':
       min_valence = 0.0;
       max_valence = 0.33;
       break;
-    case 3:
+    case 'fine':
       min_valence = 0.33;
       max_valence = 0.66;
       break;
-    case 4:
-    case 5:
+    case 'cheerful':
+    case 'happy':
       min_valence = 0.66;
       max_valence = 1.0;
       break;
@@ -26,15 +26,15 @@ export default (mood, danceability, energy) => {
   }
 
   switch (danceability) {
-    case 1:
+    case 'lay in my bed':
       min_danceability = 0.0;
       max_danceability = 0.33;
       break;
-    case 2:
+    case 'listen to music with my headphones':
       min_danceability = 0.33;
       max_danceability = 0.66;
       break;
-    case 3:
+    case 'dance all day... and night!':
       min_danceability = 0.66;
       max_danceability = 1.0;
       break;
@@ -43,15 +43,15 @@ export default (mood, danceability, energy) => {
   }
 
   switch (energy) {
-    case 1:
+    case 'soft and quiet':
       min_energy = 0.0;
       max_energy = 0.33;
       break;
-    case 2:
+    case 'not too quiet and not too loud':
       min_energy = 0.33;
       max_energy = 0.66;
       break;
-    case 3:
+    case 'fast and loud':
       min_energy = 0.66;
       max_energy = 1.0;
       break;

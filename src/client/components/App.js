@@ -18,7 +18,7 @@ import Home from './Home';
 import Quiz from './Quiz';
 import Results from './Results';
 
-import { Container } from './styled/Layout';
+import Container from './styled/Layout';
 import { Button, ButtonWithLink } from './styled/Buttons';
 import media from './styled/mediaQueries';
 
@@ -45,11 +45,11 @@ const Loader = styled.div`
 
 class App extends Component {
   state = {
-    startQuiz: false,
+    startQuiz: true,
     fetchingData: false,
-    mood: { title: '', id: null },
-    danceability: { title: '', id: null },
-    energy: { title: '', id: null },
+    mood: '',
+    danceability: '',
+    energy: '',
     playing: false,
     audio: null,
     playingURL: '',
@@ -60,10 +60,8 @@ class App extends Component {
     this.setState(() => ({ startQuiz: true }));
   }
 
-  handleAnswerClick = (type, answer) => {
-    this.setState(() => ({
-      [type]: answer,
-    }));
+  handleChange = (event, type) => {
+    this.setState({ [type]: event.target.value });
   }
 
   submitAnswers = () => {
@@ -122,9 +120,9 @@ class App extends Component {
     this.setState(() => ({
       startQuiz: false,
       fetchingData: false,
-      mood: { title: '', id: null },
-      danceability: { title: '', id: null },
-      energy: { title: '', id: null },
+      mood: '',
+      danceability: '',
+      energy: '',
       playing: false,
       audio: null,
       playingURL: '',
@@ -160,7 +158,7 @@ class App extends Component {
           <Header resetQuiz={this.resetQuiz} />
           <Quiz
             submitAnswers={this.submitAnswers}
-            handleAnswerClick={this.handleAnswerClick}
+            handleChange={this.handleChange}
             mood={mood}
             danceability={danceability}
             energy={energy}
@@ -188,7 +186,7 @@ class App extends Component {
 
   render() {
     return this.props.auth == null ? <div>Loading...</div> : (
-      <Container>        
+      <Container>
         { this.renderContent() }
         <Footer />
       </Container>

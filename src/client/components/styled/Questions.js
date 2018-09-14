@@ -2,14 +2,15 @@ import styled from 'styled-components';
 import media from './mediaQueries';
 
 export const QuestionContainer = styled.div`
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
+  height: 400px;
+  width: 380px;
+  font-size: 18px;
   max-width: 800px;
   margin: 0 auto;
-  padding: 80px 20px 20px 20px;
+  padding: 20px;
+  background-color: white;
+  color: #333;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
   @keyframes display {
     from { visibility: hidden; opacity: 0; }
     to { visibility: visible; opacity: 1; }

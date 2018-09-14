@@ -18,7 +18,9 @@ app.use(express.static('public'));
 
 require('dotenv').config({ path: 'variables.env' });
 
-mongoose.connect(process.env.DATABASE_URL);
+mongoose.connect(process.env.DATABASE_URL, {
+  useNewUrlParser: true,
+});
 
 mongoose.connection.on('error', error => console.log('database error', error));
 mongoose.Promise = global.Promise;

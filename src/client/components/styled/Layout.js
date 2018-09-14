@@ -1,7 +1,6 @@
 import styled from 'styled-components';
 
-
-export const Container = styled.div`
+export default styled.div`
   min-height: 100vh;
   max-width: 100%;
   background-color: #34ace0;

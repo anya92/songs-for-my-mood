@@ -1,38 +1,20 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import sadEmoji from '../assets/sad.png';
-import angryEmoji from '../assets/angry.png';
-import fineEmoji from '../assets/fine.png';
-import cheerfulEmoji from '../assets/cheerful.png';
-import happyEmoji from '../assets/happy.png';
-import bedIcon from '../assets/bed.png';
-import danceIcon from '../assets/dance.png';
-import headphonesEmoji from '../assets/headphones.png';
-import classicalIcon from '../assets/classical.png';
-import popIcon from '../assets/pop.png';
-import metalIcon from '../assets/metal.png';
-
 import Question from './Question';
 
 class Quiz extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      questionNumber: 1,
-    };
-
-    this.handleButtonClick = this.handleButtonClick.bind(this);
+  state = {
+    questionNumber: 1,
   }
 
-  handleButtonClick() {
+  handleButtonClick = () => {
     if (this.state.questionNumber <= 2) {
       this.setState(prevState => ({
         questionNumber: prevState.questionNumber + 1,
       }));
     } else {
-      const { mood, danceability, energy } = this.props;
-      this.props.submitAnswers(mood.id, danceability.id, energy.id);
+      this.props.submitAnswers();
     }
   }
 
@@ -43,11 +25,11 @@ class Quiz extends Component {
     switch (questionNumber) {
       case 1:
         answers = [
-          { id: 1, title: 'sad', icon: sadEmoji },
-          { id: 2, title: 'angry', icon: angryEmoji },
-          { id: 3, title: 'fine', icon: fineEmoji },
-          { id: 4, title: 'cheerful', icon: cheerfulEmoji },
-          { id: 5, title: 'happy', icon: happyEmoji },
+          'sad',
+          'angry',
+          'fine',
+          'cheerful',
+          'happy',
         ];
         return (
           <Question
@@ -55,15 +37,15 @@ class Quiz extends Component {
             value={mood}
             question="Today I am"
             answers={answers}
-            handleAnswerClick={this.props.handleAnswerClick}
+            handleChange={this.props.handleChange}
             handleButtonClick={this.handleButtonClick}
           />
         );
       case 2:
         answers = [
-          { id: 1, title: 'lay in my bed', icon: bedIcon },
-          { id: 2, title: 'listen to music with my headphones', icon: headphonesEmoji },
-          { id: 3, title: 'dance all day... and night!', icon: danceIcon },
+          'lay in my bed',
+          'listen to music with my headphones',
+          'dance all day... and night!',
         ];
         return (
           <Question
@@ -71,15 +53,15 @@ class Quiz extends Component {
             value={danceability}
             question="I want to"
             answers={answers}
-            handleAnswerClick={this.props.handleAnswerClick}
+            handleChange={this.props.handleChange}
             handleButtonClick={this.handleButtonClick}
           />
         );
       case 3:
         answers = [
-          { id: 1, title: 'soft and quiet', icon: classicalIcon },
-          { id: 2, title: 'not too quiet and not too loud', icon: popIcon },
-          { id: 3, title: 'fast and loud', icon: metalIcon },
+          'soft and quiet',
+          'not too quiet and not too loud',
+          'fast and loud',
         ];
         return (
           <Question
@@ -87,7 +69,7 @@ class Quiz extends Component {
             value={energy}
             question="Give me something"
             answers={answers}
-            handleAnswerClick={this.props.handleAnswerClick}
+            handleChange={this.props.handleChange}
             handleButtonClick={this.handleButtonClick}
           />
         );
@@ -98,7 +80,8 @@ class Quiz extends Component {
 
   render() {
     return (
-      <div>
+      <div style={{ paddingTop: '80px', display: 'grid', justifyContent: 'center' }}>
+        <h3 style={{ textAlign: 'center' }}>{ this.state.questionNumber } / 3</h3>
         { this.renderQuestions() }
       </div>
     );
@@ -106,20 +89,11 @@ class Quiz extends Component {
 }
 
 Quiz.propTypes = {
-  handleAnswerClick: PropTypes.func.isRequired,
+  handleChange: PropTypes.func.isRequired,
   submitAnswers: PropTypes.func.isRequired,
-  mood: PropTypes.shape({
-    title: PropTypes.string,
-    id: PropTypes.oneOfType([PropTypes.oneOf([null]), PropTypes.number]),
-  }).isRequired,
-  danceability: PropTypes.shape({
-    title: PropTypes.string,
-    id: PropTypes.oneOfType([PropTypes.oneOf([null]), PropTypes.number]),
-  }).isRequired,
-  energy: PropTypes.shape({
-    title: PropTypes.string,
-    id: PropTypes.oneOfType([PropTypes.oneOf([null]), PropTypes.number]),
-  }).isRequired,
+  mood: PropTypes.string.isRequired,
+  danceability: PropTypes.string.isRequired,
+  energy: PropTypes.string.isRequired,
 };
 
 export default Quiz;
