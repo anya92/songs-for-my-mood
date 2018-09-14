@@ -74,7 +74,7 @@ class App extends Component {
     const {
       mood, danceability, energy, audio,
     } = this.state;
-    audio && audio.pause();
+    if (audio) audio.pause();
     this.setState(() => ({
       startQuiz: false,
       fetchingData: true,
@@ -138,7 +138,7 @@ class App extends Component {
   }
 
   renderContent() {
-    const { auth, songs: { data, status } } = this.props;
+    const { auth, songs: { pending, data, error } } = this.props;
     const {
       startQuiz, fetchingData, mood, danceability, energy,
     } = this.state;
@@ -154,22 +154,20 @@ class App extends Component {
           energy={energy}
         />
       );
-    } else if (status === 'loading') {
+    } else if (pending) {
       return <Loader>Loading...</Loader>;
-    } else if (status === 'error') {
+    } else if (error) {
       return <div>Something wrong happened... Try again later.</div>;
-    } else if (status === 'success') {
-      return (
-        <Results
-          songs={data}
-          submitAnswers={this.submitAnswers}
-          renderPlaylistButton={this.renderPlaylistButton}
-          playAudio={this.playAudio}
-          playingURL={this.state.playingURL}
-        />
-      );
     }
-    return <div />;
+    return (
+      <Results
+        songs={data}
+        submitAnswers={this.submitAnswers}
+        renderPlaylistButton={this.renderPlaylistButton}
+        playAudio={this.playAudio}
+        playingURL={this.state.playingURL}
+      />
+    );
   }
 
   render() {

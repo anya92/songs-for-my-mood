@@ -1,9 +1,34 @@
-import { FETCH_RECOMMENDED_SONGS } from '../actions/types';
+import {
+  FETCH_RECOMMENDED_SONGS_PENDING,
+  FETCH_RECOMMENDED_SONGS_SUCCESS,
+  FETCH_RECOMMENDED_SONGS_ERROR,
+} from '../actions/types';
 
-export default (state = {}, action) => {
+const initialState = {
+  pending: false,
+  data: [],
+  error: false,
+};
+
+export default (state = initialState, action) => {
   switch (action.type) {
-    case FETCH_RECOMMENDED_SONGS:
-      return { ...state, data: action.payload, status: action.status };
+    case FETCH_RECOMMENDED_SONGS_PENDING:
+      return {
+        ...state,
+        pending: true,
+      };
+    case FETCH_RECOMMENDED_SONGS_SUCCESS:
+      return {
+        ...state,
+        pending: false,
+        data: action.payload,
+      };
+    case FETCH_RECOMMENDED_SONGS_ERROR:
+      return {
+        ...state,
+        pending: false,
+        error: action.payload,
+      };
     default:
       return state;
   }

@@ -1,22 +1,18 @@
-import {
-  FETCH_CURRENT_USER,
-  FETCH_RECOMMENDED_SONGS,
-  CREATE_PLAYLIST,
-} from './types';
+import * as types from './types';
 
 import convertAttributes from '../helpers/convertAttributes';
 
 export const fetchCurrentUser = () => async (dispatch, getState, api) => {
   try {
     const res = await api.get('/auth/current_user');
-    dispatch({ type: FETCH_CURRENT_USER, payload: res.data });
+    dispatch({ type: types.FETCH_CURRENT_USER, payload: res.data });
   } catch (error) {
     console.log(error);
   }
 };
 
 export const fetchRecommendedSongs = (mood, danceability, energy) => async (dispatch, getState, api) => {
-  dispatch({ type: FETCH_RECOMMENDED_SONGS, status: 'loading' });
+  dispatch({ type: types.FETCH_RECOMMENDED_SONGS_PENDING });
   try {
     const {
       min_valence,
@@ -39,14 +35,14 @@ export const fetchRecommendedSongs = (mood, danceability, energy) => async (disp
         max_energy,
       },
     });
-    dispatch({ type: FETCH_RECOMMENDED_SONGS, status: 'success', payload: res.data });
+    dispatch({ type: types.FETCH_RECOMMENDED_SONGS_SUCCESS, payload: res.data });
   } catch (error) {
-    dispatch({ type: FETCH_RECOMMENDED_SONGS, status: 'error' });
+    dispatch({ type: types.FETCH_RECOMMENDED_SONGS_ERROR, payload: error.message });
   }
 };
 
 export const createPlaylist = uris => async (dispatch, getState, api) => {
-  dispatch({ type: CREATE_PLAYLIST, status: 'loading' });
+  dispatch({ type: types.CREATE_PLAYLIST, status: 'loading' });
   try {
     const response = await api({
       url: '/api/create_playlist',
@@ -55,8 +51,8 @@ export const createPlaylist = uris => async (dispatch, getState, api) => {
         uris,
       },
     });
-    dispatch({ type: CREATE_PLAYLIST, status: 'success', payload: response.data });
+    dispatch({ type: types.CREATE_PLAYLIST, status: 'success', payload: response.data });
   } catch (error) {
-    dispatch({ type: CREATE_PLAYLIST, status: 'error' });
+    dispatch({ type: types.CREATE_PLAYLIST, status: 'error' });
   }
 };
