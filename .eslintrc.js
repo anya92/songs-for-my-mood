@@ -1,4 +1,5 @@
 module.exports = {
+    "parser": "babel-eslint",
     "extends": "airbnb",
     "rules": {
         "linebreak-style": ["error", "windows"],

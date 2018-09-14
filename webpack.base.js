@@ -12,7 +12,11 @@ module.exports = {
           presets: [
             'react',
             'stage-0',
+            'stage-3',
             ['env', { targets: { browser: ['last 2 versions'] } }],
+          ],
+          plugins: [
+            'transform-class-properties',
           ],
         },
       },
