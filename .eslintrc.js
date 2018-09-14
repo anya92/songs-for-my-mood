@@ -6,6 +6,7 @@ module.exports = {
         "react/jsx-filename-extension": "off",
         "jsx-a11y/click-events-have-key-events": "off",
         "camelcase": "off",
-        "no-lonely-if": "off"
+        "no-lonely-if": "off",
+        "no-unused-expressions": ["error", { "allowTaggedTemplates": true }]
     }
 };

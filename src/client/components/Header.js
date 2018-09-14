@@ -16,6 +16,10 @@ const StyledHeader = styled.div`
     color: #f7f1e3;
     font-size: 18px;
     font-weight: 500;
+    text-decoration: none;
+    padding: 8px 14px;
+    border: 2px solid #f7f1e3;
+    border-radius: 4px;
   }
 `;
 
@@ -23,22 +27,14 @@ const Title = styled.div`
   font-size: 28px;
   font-family: 'gochi hand', cursive;
   flex: 1 1;
+  cursor: pointer;
 `;
 
-const Header = ({ auth }) => {
-  switch (auth) {
-    case null:
-      return <div />;
-    case false:
-      return <div />;
-    default:
-      return (
-        <StyledHeader>
-          <Title>songs for my mood</Title>
-          <a href="/auth/logout">Logout</a>
-        </StyledHeader>
-      );
-  }
-};
+const Header = ({ resetQuiz }) => (
+  <StyledHeader>
+    <Title onClick={resetQuiz}>songs for my mood</Title>
+    <a href="/auth/logout">Logout</a>
+  </StyledHeader>
+);
 
 export default Header;

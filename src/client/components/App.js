@@ -1,8 +1,16 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
+import {
+  oneOf,
+  oneOfType,
+  bool,
+  shape,
+  string,
+  arrayOf,
+  func,
+} from 'prop-types';
 import styled, { injectGlobal } from 'styled-components';
-import { fetchCurrentUser, fetchRecommendedSongs, createPlaylist } from '../actions';
+import { fetchRecommendedSongs, createPlaylist } from '../actions';
 
 import Header from './Header';
 import Footer from './Footer';
@@ -13,8 +21,6 @@ import Results from './Results';
 import { Container } from './styled/Layout';
 import { Button, ButtonWithLink } from './styled/Buttons';
 import media from './styled/mediaQueries';
-
-// import sampleData from '../helpers/sampleData';
 
 injectGlobal`
   body {
@@ -38,39 +44,29 @@ const Loader = styled.div`
 `;
 
 class App extends Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      startQuiz: false,
-      fetchingData: false,
-      mood: { title: '', id: null },
-      danceability: { title: '', id: null },
-      energy: { title: '', id: null },
-      playing: false,
-      audio: null,
-      playingURL: '',
-      playlist: false,
-    };
-
-    this.startQuiz = this.startQuiz.bind(this);
-    this.handleAnswerClick = this.handleAnswerClick.bind(this);
-    this.submitAnswers = this.submitAnswers.bind(this);
-    this.playAudio = this.playAudio.bind(this);
-    this.renderPlaylistButton = this.renderPlaylistButton.bind(this);
+  state = {
+    startQuiz: false,
+    fetchingData: false,
+    mood: { title: '', id: null },
+    danceability: { title: '', id: null },
+    energy: { title: '', id: null },
+    playing: false,
+    audio: null,
+    playingURL: '',
+    playlist: false,
   }
 
-  startQuiz() {
+  startQuiz = () => {
     this.setState(() => ({ startQuiz: true }));
   }
 
-  handleAnswerClick(type, answer) {
+  handleAnswerClick = (type, answer) => {
     this.setState(() => ({
       [type]: answer,
     }));
   }
 
-  submitAnswers() {
+  submitAnswers = () => {
     const {
       mood, danceability, energy, audio,
     } = this.state;
@@ -86,7 +82,7 @@ class App extends Component {
     this.props.fetchRecommendedSongs(mood, danceability, energy);
   }
 
-  playAudio(preview_url) {
+  playAudio = (preview_url) => {
     const audio = new Audio(preview_url);
     audio.onended = () => this.setState(() => ({ playing: false, playingURL: '' }));
     if (!this.state.playing) {
@@ -115,14 +111,28 @@ class App extends Component {
     }
   }
 
-  createPlaylist() {
+  createPlaylist = () => {
     const { data: tracks } = this.props.songs;
     const uris = tracks.map(track => track.uri);
     this.props.createPlaylist(uris);
     this.setState(() => ({ playlist: true }));
   }
 
-  renderPlaylistButton() {
+  resetQuiz = () => {
+    this.setState(() => ({
+      startQuiz: false,
+      fetchingData: false,
+      mood: { title: '', id: null },
+      danceability: { title: '', id: null },
+      energy: { title: '', id: null },
+      playing: false,
+      audio: null,
+      playingURL: '',
+      playlist: false,
+    }));
+  }
+
+  renderPlaylistButton = () => {
     const { playlist } = this.state;
     const { playlist: { data, status } } = this.props;
     if (!playlist) {
@@ -137,7 +147,7 @@ class App extends Component {
     return <div />;
   }
 
-  renderContent() {
+  renderContent = () => {
     const { auth, songs: { pending, data, error } } = this.props;
     const {
       startQuiz, fetchingData, mood, danceability, energy,
@@ -146,13 +156,16 @@ class App extends Component {
       return <Home logged={auth} startQuiz={this.startQuiz} />;
     } else if (startQuiz) {
       return (
-        <Quiz
-          submitAnswers={this.submitAnswers}
-          handleAnswerClick={this.handleAnswerClick}
-          mood={mood}
-          danceability={danceability}
-          energy={energy}
-        />
+        <div>
+          <Header resetQuiz={this.resetQuiz} />
+          <Quiz
+            submitAnswers={this.submitAnswers}
+            handleAnswerClick={this.handleAnswerClick}
+            mood={mood}
+            danceability={danceability}
+            energy={energy}
+          />
+        </div>
       );
     } else if (pending) {
       return <Loader>Loading...</Loader>;
@@ -160,20 +173,22 @@ class App extends Component {
       return <div>Something wrong happened... Try again later.</div>;
     }
     return (
-      <Results
-        songs={data}
-        submitAnswers={this.submitAnswers}
-        renderPlaylistButton={this.renderPlaylistButton}
-        playAudio={this.playAudio}
-        playingURL={this.state.playingURL}
-      />
+      <div>
+        <Header resetQuiz={this.resetQuiz} />
+        <Results
+          songs={data}
+          submitAnswers={this.submitAnswers}
+          renderPlaylistButton={this.renderPlaylistButton}
+          playAudio={this.playAudio}
+          playingURL={this.state.playingURL}
+        />
+      </div>
     );
   }
 
   render() {
     return this.props.auth == null ? <div>Loading...</div> : (
-      <Container>
-        <Header auth={this.props.auth} startQuiz={this.state.startQuiz} />
+      <Container>        
         { this.renderContent() }
         <Footer />
       </Container>
@@ -182,16 +197,19 @@ class App extends Component {
 }
 
 App.propTypes = {
-  auth: PropTypes.oneOfType([
-    PropTypes.oneOf([null]),
-    PropTypes.bool,
-    PropTypes.object,
+  auth: oneOfType([
+    oneOf([null]),
+    bool,
+    shape({}),
   ]).isRequired,
-  songs: PropTypes.object.isRequired,
-  playlist: PropTypes.object.isRequired,
-  fetchCurrentUser: PropTypes.func.isRequired,
-  fetchRecommendedSongs: PropTypes.func.isRequired,
-  createPlaylist: PropTypes.func.isRequired,
+  songs: shape({
+    pending: bool,
+    error: oneOfType([bool, string]),
+    data: arrayOf(shape({})),
+  }).isRequired,
+  playlist: shape({}).isRequired,
+  fetchRecommendedSongs: func.isRequired,
+  createPlaylist: func.isRequired,
 };
 
 function mapStateToProps({ auth, songs, playlist }) {
@@ -203,7 +221,6 @@ function mapStateToProps({ auth, songs, playlist }) {
 }
 
 export default connect(mapStateToProps, {
-  fetchCurrentUser,
   fetchRecommendedSongs,
   createPlaylist,
 })(App);
