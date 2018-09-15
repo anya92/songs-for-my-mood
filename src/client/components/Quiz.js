@@ -80,7 +80,7 @@ class Quiz extends Component {
 
   render() {
     return (
-      <div style={{ paddingTop: '80px', display: 'grid', justifyContent: 'center' }}>
+      <div style={{ display: 'grid', justifyContent: 'center', padding: '80px 20px 20px 20px' }}>
         <h3 style={{ textAlign: 'center' }}>{ this.state.questionNumber } / 3</h3>
         { this.renderQuestions() }
       </div>

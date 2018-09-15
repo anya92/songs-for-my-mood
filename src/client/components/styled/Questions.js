@@ -3,107 +3,69 @@ import media from './mediaQueries';
 
 export const QuestionContainer = styled.div`
   height: 400px;
-  width: 380px;
   font-size: 18px;
-  max-width: 800px;
+  width: 300px;
   margin: 0 auto;
   padding: 20px;
   background-color: white;
+  border-radius: 10px;
   color: #333;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
-  @keyframes display {
-    from { visibility: hidden; opacity: 0; }
-    to { visibility: visible; opacity: 1; }
-  }
+  position: relative;
 `;
 
 export const Title = styled.div`
-  height: 120px;
+  margin-bottom: 30px;
   font-size: 28px;
   font-weight: 300;
   line-height: 1.5;
-  visibility: hidden;
-  opacity: 0;
-  animation: display .3s .5s ease-in-out forwards;  
-  strong {
-    font-size: 28px;
-    font-weight: 600;
-    color: khaki;
-    text-transform: uppercase;
-  }
+  text-align: center;
   ${media.small`
     font-size: 30px;
-    strong {
-      font-size: 34px;
-    }
   `}
   ${media.medium`
     font-size: 34px;
-    strong {
-      font-size: 38px;
-    }
   `}
 `;
 
-export const Answers = styled.div`
-  margin-top: 20px;
-  display: flex;
-  justify-content: space-around;
-  flex-wrap: wrap;
-  visibility: hidden;
-  opacity: 0;
-  animation: display .3s .5s ease-in-out forwards;
+export const Radio = styled.div`
+  padding: 5px;
+  margin: 4px;
 `;
 
-export const Emoji = styled.div`
-  margin: 10px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  flex-basis: 80px;
-  img {
+export const Input = styled.input`
+  display: none;
+  & + label span {
+    display: inline-block;
     cursor: pointer;
-    width: 80px;
-    height: 80px;
-    transition: transform .3s ease-in-out;
+    width: 16px;
+    height: 16px;
+    margin: 3px 8px 0 0;
+    float: left;
+    border: 2px solid #333;
+    border-radius: 50%;
   }
-  div {
-    display: none;
+  & + label {
+    cursor: pointer;
+    display: grid;
+    grid-template-rows: 1fr;
+    grid-template-columns: auto 1fr;
   }
-  ${media.small`
-  flex-basis: 100px;
-    img {
-      width: 100px;
-      height: 100px;
+  &:checked + label {
+    color: #34ace0;
+  }
+  &:checked + label span {
+    position: relative;
+    border-color: #34ace0;
+    &::after {
+      content: ' ';
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background-color: #34ace0;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
     }
-    div {
-      display: block;
-      opacity: 0;
-      visibility: hidden;
-      margin-top: 20px;
-      font-size: 16px;
-      font-weight: 300;
-      text-transform: uppercase;
-      transition: all .3s ease-in-out;
-    }
-    &:hover {
-      img {
-        transform: scale(1.1);
-      }
-      div {
-        visibility: visible;
-        opacity: 1;
-      }
-    }
-  `}
-  ${media.medium`
-    flex-basis: 120px;
-    img {
-      width: 120px;
-      height: 120px;
-    }
-    div {
-      font-size: 20px;
-    }
-  `}
+  }
 `;
