@@ -124,17 +124,19 @@ class App extends Component {
 
   renderPlaylistButton = () => {
     const { playlist } = this.state;
-    const { playlist: { data, status } } = this.props;
+    const { playlist: { data, pending, error } } = this.props;
     if (!playlist) {
       return <Button onClick={() => this.createPlaylist()}>Add to Spotify</Button>;
-    } else if (status === 'loading') {
+    } else if (pending) {
       return <Button>Loading...</Button>;
-    } else if (status === 'success') {
-      return <ButtonWithLink><a href={data.uri}>Open in Spotify</a></ButtonWithLink>;
-    } else if (status === 'error') {
+    } else if (error) {
       return <div>Something wrong happened... Try again later.</div>;
     }
-    return <div />;
+    return (
+      <ButtonWithLink>
+        <a href={data.uri}>Open in Spotify</a>
+      </ButtonWithLink>
+    );
   }
 
   renderContent = () => {
@@ -197,7 +199,11 @@ App.propTypes = {
     error: oneOfType([bool, string]),
     data: arrayOf(shape({})),
   }).isRequired,
-  playlist: shape({}).isRequired,
+  playlist: shape({
+    pending: bool,
+    error: oneOfType([bool, string]),
+    data: arrayOf(shape({})),
+  }).isRequired,
   fetchRecommendedSongs: func.isRequired,
   createPlaylist: func.isRequired,
 };

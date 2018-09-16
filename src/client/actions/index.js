@@ -42,7 +42,7 @@ export const fetchRecommendedSongs = (mood, danceability, energy) => async (disp
 };
 
 export const createPlaylist = uris => async (dispatch, getState, api) => {
-  dispatch({ type: types.CREATE_PLAYLIST, status: 'loading' });
+  dispatch({ type: types.CREATE_PLAYLIST_PENDING });
   try {
     const response = await api({
       url: '/api/create_playlist',
@@ -51,8 +51,8 @@ export const createPlaylist = uris => async (dispatch, getState, api) => {
         uris,
       },
     });
-    dispatch({ type: types.CREATE_PLAYLIST, status: 'success', payload: response.data });
+    dispatch({ type: types.CREATE_PLAYLIST_SUCCESS, payload: response.data });
   } catch (error) {
-    dispatch({ type: types.CREATE_PLAYLIST, status: 'error' });
+    dispatch({ type: types.CREATE_PLAYLIST_ERROR, payload: error.message });
   }
 };
