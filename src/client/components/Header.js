@@ -1,6 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
 
+import media from './styled/mediaQueries';
+
 const StyledHeader = styled.div`
   position: absolute;
   top: 0;
@@ -8,19 +10,13 @@ const StyledHeader = styled.div`
   width: 100%;
   z-index: 4;
   padding: 20px;
-  display: flex;
-  justify-content: space-around;
-  align-items: baseline;
   background-color: ${props => props.theme.main};
-  a {
-    color: ${props => props.theme.light};
-    font-size: 18px;
-    font-weight: 500;
-    text-decoration: none;
-    padding: 8px 14px;
-    border: 2px solid ${props => props.theme.light};
-    border-radius: 4px;
-  }
+  display: grid;
+  justify-items: center;
+  align-items: center;
+  ${media.small`
+    justify-items: normal;
+  `}
 `;
 
 const Title = styled.div`
@@ -33,7 +29,6 @@ const Title = styled.div`
 const Header = ({ resetQuiz }) => (
   <StyledHeader>
     <Title onClick={resetQuiz}>songs for my mood</Title>
-    <a href="/auth/logout">Logout</a>
   </StyledHeader>
 );
 

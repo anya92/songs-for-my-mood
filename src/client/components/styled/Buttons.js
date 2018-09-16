@@ -8,10 +8,10 @@ export const ButtonWithLink = styled.div`
     font-size: 18px;
     font-weight: 500;
     font-family: ubuntu, sans-serif;
-    background-color: #ffda79;
+    background-color: ${props => (props.light ? props.theme.light : '#ffda79')};
     border-radius: 8px;
     position: relative;
-    box-shadow: 0px 6px #ccae62;
+    box-shadow: 0px 6px ${props => (props.light ? '#ccc' : '#ccae62')};
     text-transform: uppercase;
     letter-spacing: 2px;
     color: #555;
@@ -19,7 +19,7 @@ export const ButtonWithLink = styled.div`
     padding: 20px;
     &:hover {
       top: 2px;
-      box-shadow: 0px 4px #ccae62;
+      box-shadow: 0px 4px ${props => (props.light ? '#ccc' : '#ccae62')};
     }
     &:active {
       top: 6px;

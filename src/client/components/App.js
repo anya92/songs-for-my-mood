@@ -9,7 +9,7 @@ import {
   arrayOf,
   func,
 } from 'prop-types';
-import styled, { injectGlobal } from 'styled-components';
+import { injectGlobal } from 'styled-components';
 import { fetchRecommendedSongs, createPlaylist } from '../actions';
 
 import Header from './Header';
@@ -18,14 +18,14 @@ import Home from './Home';
 import Quiz from './Quiz';
 import Results from './Results';
 
-import Container from './styled/Layout';
+import { Container, Loader } from './styled/Layout';
 import { Button, ButtonWithLink } from './styled/Buttons';
 import media from './styled/mediaQueries';
 
 injectGlobal`
   body {
     position: relative;
-    padding-bottom: 144px;
+    padding-bottom: 92px;
     ${media.small`
       padding-bottom: 92px;
     `}
@@ -35,17 +35,9 @@ injectGlobal`
   }
 `;
 
-const Loader = styled.div`
-  height: 100%;
-  color: ${props => props.theme.light};
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
-
 class App extends Component {
   state = {
-    startQuiz: true,
+    startQuiz: false,
     fetchingData: false,
     mood: '',
     danceability: '',

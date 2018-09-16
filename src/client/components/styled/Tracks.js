@@ -56,12 +56,8 @@ export const Artist = styled.div`
 `;
 
 export const Play = styled.div`
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: flex-end;
   font-weight: 600;
+  cursor: pointer;
 `;
 
 export const Time = styled.div`

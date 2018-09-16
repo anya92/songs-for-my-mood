@@ -17,16 +17,22 @@ const Tracks = ({ songs, playAudio, playingURL }) => (
       <Title><a href={uri}>{name}</a></Title>
       <Artist>{artist}</Artist>
     </Info>
-    <Play>
+    <div style={{
+      height: '100%',
+      display: 'flex',
+      flexDirection: 'column',
+      justifyContent: 'center',
+      alignItems: 'flex-end',
+    }}>
       {
         preview_url && (
-          <div onClick={playAudio}>
+          <Play onClick={() => playAudio(preview_url)}>
             {playingURL === preview_url ? 'pause' : 'play'}
-          </div>
+          </Play>
         )
       }
       <Time>{convertMS(duration_ms)}</Time>
-    </Play>
+    </div>
   </Track>
       ))
     }

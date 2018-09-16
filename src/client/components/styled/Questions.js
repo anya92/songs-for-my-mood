@@ -7,7 +7,7 @@ export const QuestionContainer = styled.div`
   width: 300px;
   margin: 0 auto;
   padding: 20px;
-  background-color: white;
+  background-color: ${props => props.theme.light};
   border-radius: 10px;
   color: #333;
   position: relative;
@@ -16,7 +16,7 @@ export const QuestionContainer = styled.div`
 export const Title = styled.div`
   margin-bottom: 30px;
   font-size: 28px;
-  font-weight: 300;
+  font-weight: 500;
   line-height: 1.5;
   text-align: center;
   ${media.small`

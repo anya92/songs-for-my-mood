@@ -10,6 +10,7 @@ const Results = styled.div`
   background-color: #FFF;
   padding: 80px 20px 20px 20px;
   color: #555;
+  min-height: 100vh;
   max-width: 100%;
 `;
 
