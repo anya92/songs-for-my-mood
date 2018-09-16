@@ -13,7 +13,7 @@ const Footer = styled.div`
   text-align: center;
   padding: 10px 20px;
   color: #555;
-  background-color: #f7f1e3;
+  background-color: ${props => props.theme.light};
   font-size: 14px;
   div {
     margin: 10px 5px;

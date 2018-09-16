@@ -11,14 +11,14 @@ const StyledHeader = styled.div`
   display: flex;
   justify-content: space-around;
   align-items: baseline;
-  background-color: #34ace0;
+  background-color: ${props => props.theme.main};
   a {
-    color: #f7f1e3;
+    color: ${props => props.theme.light};
     font-size: 18px;
     font-weight: 500;
     text-decoration: none;
     padding: 8px 14px;
-    border: 2px solid #f7f1e3;
+    border: 2px solid ${props => props.theme.light};
     border-radius: 4px;
   }
 `;

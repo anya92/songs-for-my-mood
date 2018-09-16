@@ -1,14 +1,25 @@
 import React from 'react';
 import { renderToString } from 'react-dom/server';
 import { Provider } from 'react-redux';
-import { ServerStyleSheet } from 'styled-components';
+import { ServerStyleSheet, ThemeProvider } from 'styled-components';
 import serialize from 'serialize-javascript';
 
 import App from '../../client/components/App';
 
 export default (req, store) => {
+  const theme = {
+    main: '#34ace0',
+    light: '#f7f1e3',
+  };
+
   const sheet = new ServerStyleSheet();
-  const content = renderToString(sheet.collectStyles(<Provider store={store}><App /></Provider>));
+  const content = renderToString(sheet.collectStyles(
+    <Provider store={store}>
+      <ThemeProvider theme={theme}>
+        <App />
+      </ThemeProvider>
+    </Provider>,
+  ));
   const styleTags = sheet.getStyleTags();
 
   return `

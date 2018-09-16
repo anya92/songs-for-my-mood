@@ -51,17 +51,17 @@ export const Input = styled.input`
     grid-template-columns: auto 1fr;
   }
   &:checked + label {
-    color: #34ace0;
+    color: ${props => props.theme.main};
   }
   &:checked + label span {
     position: relative;
-    border-color: #34ace0;
+    border-color: ${props => props.theme.main};
     &::after {
       content: ' ';
       width: 6px;
       height: 6px;
       border-radius: 50%;
-      background-color: #34ace0;
+      background-color: ${props => props.theme.main};
       position: absolute;
       top: 50%;
       left: 50%;

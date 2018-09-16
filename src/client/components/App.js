@@ -37,7 +37,7 @@ injectGlobal`
 
 const Loader = styled.div`
   height: 100%;
-  color: #f7f1e3;
+  color: ${props => props.theme.light};
   display: flex;
   justify-content: center;
   align-items: center;
