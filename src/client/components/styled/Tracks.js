@@ -61,17 +61,11 @@ export const Play = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: flex-end;
-`;
-
-export const Icon = styled.div`
-margin-bottom: 10px;
-  img {
-    width: 18px;
-    cursor: pointer;
-  }
+  font-weight: 600;
 `;
 
 export const Time = styled.div`
+  margin-top: 10px;
   font-size: .9rem;
   font-weight: 300;
 `;

@@ -27,7 +27,7 @@ injectGlobal`
     position: relative;
     padding-bottom: 144px;
     ${media.small`
-      padding-bottom: 128px;
+      padding-bottom: 92px;
     `}
     ${media.medium`
       padding-bottom: 56px;

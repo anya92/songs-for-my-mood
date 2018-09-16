@@ -21,6 +21,7 @@ const Footer = styled.div`
   a {
     color: #555;
     font-weight: 600;
+    margin-left: 6px;
   }
   ${media.medium`
     flex-direction: row;
@@ -30,8 +31,17 @@ const Footer = styled.div`
 
 export default () => (
   <Footer>
-    <div>enjoyed with <a href="https://developer.spotify.com/web-api/" target="_blank" rel="noopener noreferrer">Spotify Web API</a></div>
-    <div>icons designed by Vectors Market, Twitter and Roundicons from <a href="https://flaticon.com" target="_blank" rel="noopener noreferrer">Flaticon</a></div>
-    <div>created by <a href="https://github.com/anya92" target="_blank" rel="noopener noreferrer">anya92</a></div>
+    <div>
+      enjoyed with
+      <a href="https://developer.spotify.com/web-api/" target="_blank" rel="noopener noreferrer">
+        Spotify Web API
+      </a>
+    </div>
+    <div>
+      created by
+      <a href="https://github.com/anya92" target="_blank" rel="noopener noreferrer">
+        anya92
+      </a>
+    </div>
   </Footer>
 );
